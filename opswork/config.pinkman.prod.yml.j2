@@ -1,0 +1,13 @@
+server:
+  hostname: {{ hostname }}
+  port: {{ port }}
+
+cache:
+  type: sqlite
+  path: /etc/pinkman.prod.db
+
+backend:
+  type: http
+  method: post
+  url: {{ api_url }}
+  apikey: {{ api_key }}
