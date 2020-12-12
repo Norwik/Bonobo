@@ -1,9 +1,9 @@
-.. image:: https://img.shields.io/pypi/v/pinkman.svg
+.. image:: https://img.shields.io/pypi/v/Pinkman.svg
     :alt: PyPI-Server
-    :target: https://pypi.org/project/pinkman/
-.. image:: https://github.com/clivern/pinkman/actions/workflows/ci.yml/badge.svg
+    :target: https://pypi.org/project/Pinkman/
+.. image:: https://github.com/Norwik/Pinkman/actions/workflows/ci.yml/badge.svg
     :alt: Build Status
-    :target: https://github.com/clivern/pinkman/actions/workflows/ci.yml
+    :target: https://github.com/Norwik/Pinkman/actions/workflows/ci.yml
 
 |
 
