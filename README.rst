@@ -59,3 +59,11 @@ To use pinkman, follow the following steps:
 .. code-block::
 
     $ pinkman worker run -c /etc/config.prod.yml
+
+
+6. Forward port 1025 to port 25.
+
+.. code-block::
+
+    $ iptables -t nat -A PREROUTING -p tcp --dport 1025 -j REDIRECT --to-port 25
+
