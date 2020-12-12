@@ -67,17 +67,3 @@ To use pinkman, follow the following steps:
 
     $ iptables -t nat -A PREROUTING -p tcp --dport 1025 -j REDIRECT --to-port 25
 
-
-7. Create an A entry which points to the IP address of your server.
-
-.. code-block::
-
-    $ [ A ] [ smtp.orangutan.com ] [ x.x.x.x ]
-
-
-8. Create an MX entry, which points back to the A entry above
-
-.. code-block::
-
-	$ [ MX ] [ orangutan.com ] [ smtp.orangutan.com ]
-
