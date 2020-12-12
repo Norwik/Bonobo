@@ -61,7 +61,7 @@ To use pinkman, follow the following steps:
     $ pinkman worker run -c /etc/config.prod.yml
 
 
-6. Forward port 1025 to port 25.
+6. Forward packets from port 1025 to port 25.
 
 .. code-block::
 
