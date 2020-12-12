@@ -51,7 +51,8 @@ class Database:
         cursor = self._connection.cursor()
 
         result = cursor.execute(
-            "INSERT INTO mailbox VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
+            "INSERT INTO mailbox VALUES (?, ?, ?, datetime('now'), datetime('now'))",
+            (
                 message.id,
                 json.dumps(
                     {
@@ -63,7 +64,7 @@ class Database:
                     }
                 ),
                 message.status,
-            )
+            ),
         )
 
         cursor.close()
@@ -76,7 +77,7 @@ class Database:
         cursor = self._connection.cursor()
 
         result = cursor.execute(
-            "UPDATE mailbox SET status = '{}' WHERE id = '{}'".format(status, id)
+            "UPDATE mailbox SET status = ? WHERE id = ?", (status, id)
         )
 
         cursor.close()
@@ -91,9 +92,8 @@ class Database:
         cursor = self._connection.cursor()
 
         rows = cursor.execute(
-            "SELECT id, message, status, createdAt, updatedAt FROM mailbox WHERE status = '{}' LIMIT {}".format(
-                status, limit
-            )
+            "SELECT id, message, status, createdAt, updatedAt FROM mailbox WHERE status = ? LIMIT ?",
+            (status, limit),
         ).fetchall()
 
         cursor.close()
