@@ -20,17 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import click
-import secrets
 
+class Remote:
+    """Remote Model"""
 
-class Random:
-    """Random Class"""
+    def __init__(
+        self,
+        method,
+        url,
+        apikey,
+    ):
+        self._method = method
+        self._url = url
+        self._apikey = apikey
 
-    def password(self, length):
-        """
-        Generate a random password
-        """
-        password = secrets.token_urlsafe(length)
+    @property
+    def method(self):
+        return self._method
 
-        click.echo(f"Random Password: {password}")
+    @property
+    def url(self):
+        return self._url
+
+    @property
+    def apikey(self):
+        return self._apikey

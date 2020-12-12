@@ -20,51 +20,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import smtpd
+import uuid
 
-class Recipe:
-    """Recipe Model"""
+from pinkman.model.message import Message
 
-    def __init__(self, id, name, recipe, templates, tags, created_at, updated_at):
-        """Class Constructor"""
-        self._id = id
-        self._name = name
-        self._recipe = recipe
-        self._templates = templates
-        self._tags = tags
-        self._created_at = created_at
-        self._updated_at = updated_at
 
-    @property
-    def id(self):
-        """Recipe ID"""
-        return self._id
+class Mailbox(smtpd.SMTPServer):
+    """Mailbox Module"""
 
-    @property
-    def name(self):
-        """Recipe Name"""
-        return self._name
+    def __init__(self, configs, database):
+        super().__init__(
+            (configs["server"]["hostname"], configs["server"]["port"]), None
+        )
+        self.configs = configs
+        self.database = database
 
-    @property
-    def recipe(self):
-        """Recipe Main"""
-        return self._recipe
+    def process_message(
+        self, peer, mailfrom, rcpttos, data, mail_options=[], rcpt_options=[]
+    ):
+        message = Message(
+            str(uuid.uuid4()),
+            mailfrom,
+            rcpttos,
+            data.decode("utf-8"),
+            mail_options,
+            rcpt_options,
+            "PENDING",
+            None,
+            None,
+        )
 
-    @property
-    def templates(self):
-        """Recipe Templates"""
-        return self._templates
-
-    @property
-    def tags(self):
-        """Recipe Tags"""
-        return self._tags
-
-    @property
-    def created_at(self):
-        """Recipe Created At"""
-        return self._created_at
-
-    @property
-    def updated_at(self):
-        """Recipe Updated At"""
-        return self._updated_at
+        self.database.insert_message(message)

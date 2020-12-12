@@ -20,50 +20,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import json
-from re import sub
-from prettytable import PrettyTable
+import click
+import asyncore
+
+from pinkman.module.file import File
+from pinkman.module.config import Config
+from pinkman.module.mailbox import Mailbox
+from pinkman.module.database import Database
 
 
-class Output:
-    """Output Class"""
+class Server:
+    """Server Command Class"""
 
-    JSON = "JSON"
-    DEFAULT = "DEFAULT"
+    def __init__(self):
+        self.file = File()
+        self.config = Config()
+        self.database = Database()
 
-    def _table(self, data):
-        """Output data as Table"""
-        headers = []
-        rows = []
+    def run(self, config_path):
+        self.config.load(config_path)
 
-        for item in data:
-            headers = item.keys()
-            rows.append(item.values())
+        configs = self.config.get_configs()
 
-        x = PrettyTable()
-        x.field_names = headers
-        x.add_rows(rows)
+        if not self.file.exists(configs["cache"]["path"]):
+            self.database.connect(configs["cache"]["path"])
+            self.database.migrate()
+        else:
+            self.database.connect(configs["cache"]["path"])
 
-        return x
+        click.echo("Server is up and running!")
 
-    def _json(self, data):
-        """Output data as JSON"""
-        new = []
-
-        for item in data:
-            new.append({self.camel_case(k): v for k, v in item.items()})
-
-        return json.dumps(new)
-
-    def render(self, data, typ):
-        """Render Data to the Console"""
-        if typ == Output.JSON:
-            return self._json(data)
-
-        return self._table(data)
-
-    def camel_case(self, value):
-        """Change string into camel case"""
-        value = sub(r"(_|-)+", " ", value).title().replace(" ", "")
-
-        return "".join([value[0].lower(), value[1:]])
+        server = Mailbox(configs, self.database)
+        asyncore.loop()

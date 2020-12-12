@@ -23,16 +23,13 @@
 import json
 import sqlite3
 
-from opswork.model.host import Host
-from opswork.model.recipe import Recipe
-from opswork.model.secret import Secret
+from pinkman.model.message import Message
 
 
 class Database:
     """Database Class"""
 
     def connect(self, path):
-        """Connect into a database"""
         self.path = path
 
         self._connection = sqlite3.connect(self.path)
@@ -43,74 +40,29 @@ class Database:
         cursor = self._connection.cursor()
 
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS host (id TEXT, name TEXT, config TEXT, createdAt TEXT, updatedAt TEXT)"
-        )
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS recipe (id TEXT, name TEXT, config TEXT, createdAt TEXT, updatedAt TEXT)"
-        )
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS task (id TEXT, name TEXT, payload TEXT, result TEXT, createdAt TEXT, updatedAt TEXT)"
-        )
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS secret (id TEXT, name TEXT, value TEXT, createdAt TEXT, updatedAt TEXT)"
+            "CREATE TABLE IF NOT EXISTS mailbox (id TEXT, message TEXT, status TEXT, createdAt TEXT, updatedAt TEXT)"
         )
 
         cursor.close()
+
         self._connection.commit()
 
-    def get_host(self, name):
-        """Get a row by host name"""
-        cursor = self._connection.cursor()
-
-        rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM host WHERE name = '{}'".format(
-                name
-            )
-        ).fetchall()
-
-        cursor.close()
-
-        if len(rows) > 0:
-            for row in rows:
-                data = json.loads(row[2])
-
-                host = Host(
-                    row[0],
-                    row[1],
-                    data["connection"],
-                    data["ip"],
-                    data["port"],
-                    data["user"],
-                    data["password"],
-                    data["ssh_private_key"],
-                    data["tags"],
-                    row[3],
-                    row[4],
-                )
-
-                return host
-        else:
-            return None
-
-    def insert_host(self, host):
-        """Insert a new row"""
+    def insert_message(self, message):
         cursor = self._connection.cursor()
 
         result = cursor.execute(
-            "INSERT INTO host VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
-                host.id,
-                host.name,
+            "INSERT INTO mailbox VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
+                message.id,
                 json.dumps(
                     {
-                        "connection": host.connection,
-                        "ip": host.ip,
-                        "port": host.port,
-                        "user": host.user,
-                        "password": host.password,
-                        "ssh_private_key": host.ssh_private_key,
-                        "tags": host.tags,
+                        "mailfrom": message.mailfrom,
+                        "rcpttos": message.rcpttos,
+                        "data": message.data,
+                        "mail_options": message.mail_options,
+                        "rcpt_options": message.rcpt_options,
                     }
                 ),
+                message.status,
             )
         )
 
@@ -120,91 +72,11 @@ class Database:
 
         return result.rowcount
 
-    def list_hosts(self):
-        """List all rows"""
-        result = []
-
-        cursor = self._connection.cursor()
-        rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM host"
-        ).fetchall()
-        cursor.close()
-
-        for row in rows:
-            data = json.loads(row[2])
-
-            host = Host(
-                row[0],
-                row[1],
-                data["connection"],
-                data["ip"],
-                data["port"],
-                data["user"],
-                data["password"],
-                data["ssh_private_key"],
-                data["tags"],
-                row[3],
-                row[4],
-            )
-
-            result.append(host)
-
-        return result
-
-    def delete_host(self, name):
-        """Delete a row by host name"""
-        cursor = self._connection.cursor()
-
-        cursor.execute("DELETE FROM host WHERE name = ?", (name,))
-
-        cursor.close()
-
-        self._connection.commit()
-
-    def get_recipe(self, name):
-        """Get a row by recipe name"""
-        cursor = self._connection.cursor()
-
-        rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM recipe WHERE name = '{}'".format(
-                name
-            )
-        ).fetchall()
-
-        cursor.close()
-
-        if len(rows) > 0:
-            for row in rows:
-                data = json.loads(row[2])
-                recipe = Recipe(
-                    row[0],
-                    row[1],
-                    data["recipe"],
-                    data["templates"],
-                    data["tags"],
-                    row[3],
-                    row[4],
-                )
-                return recipe
-        else:
-            return None
-
-    def insert_recipe(self, recipe):
-        """Insert a new row"""
+    def update_message_status(self, id, status):
         cursor = self._connection.cursor()
 
         result = cursor.execute(
-            "INSERT INTO recipe VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
-                recipe.id,
-                recipe.name,
-                json.dumps(
-                    {
-                        "recipe": recipe.recipe,
-                        "templates": recipe.templates,
-                        "tags": recipe.tags,
-                    }
-                ),
-            )
+            "UPDATE mailbox SET status = '{}' WHERE id = '{}'".format(status, id)
         )
 
         cursor.close()
@@ -213,126 +85,42 @@ class Database:
 
         return result.rowcount
 
-    def list_recipes(self):
-        """List all rows"""
-        result = []
-
-        cursor = self._connection.cursor()
-        rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM recipe"
-        ).fetchall()
-        cursor.close()
-
-        for row in rows:
-            data = json.loads(row[2])
-            recipe = Recipe(
-                row[0],
-                row[1],
-                data["recipe"],
-                data["templates"],
-                data["tags"],
-                row[3],
-                row[4],
-            )
-            result.append(recipe)
-
-        return result
-
-    def delete_recipe(self, name):
-        """Delete a row by recipe name"""
-        cursor = self._connection.cursor()
-
-        cursor.execute("DELETE FROM recipe WHERE name = ?", (name,))
-
-        cursor.close()
-
-        self._connection.commit()
-
-    def get_secret(self, name):
-        """Get a row by secret name"""
-        cursor = self._connection.cursor()
-
-        rows = cursor.execute(
-            "SELECT id, name, value, createdAt, updatedAt FROM secret WHERE name = '{}'".format(
-                name
-            )
-        ).fetchall()
-
-        cursor.close()
-
-        if len(rows) > 0:
-            for row in rows:
-                data = json.loads(row[2])
-
-                secret = Secret(
-                    row[0],
-                    row[1],
-                    data["value"],
-                    data["tags"],
-                    row[3],
-                    row[4],
-                )
-
-                return secret
-        else:
-            return None
-
-    def list_secrets(self):
-        """List all rows"""
+    def filter_messages(self, status, limit=10):
         result = []
 
         cursor = self._connection.cursor()
 
         rows = cursor.execute(
-            "SELECT id, name, value, createdAt, updatedAt FROM secret"
+            "SELECT id, message, status, createdAt, updatedAt FROM mailbox WHERE status = '{}' LIMIT {}".format(
+                status, limit
+            )
         ).fetchall()
 
         cursor.close()
 
         for row in rows:
-            data = json.loads(row[2])
+            data = json.loads(row[1])
 
-            secret = Secret(
+            message = Message(
                 row[0],
-                row[1],
-                data["value"],
-                data["tags"],
+                data["mailfrom"],
+                data["rcpttos"],
+                data["data"],
+                data["mail_options"],
+                data["rcpt_options"],
+                row[2],
                 row[3],
                 row[4],
             )
 
-            result.append(secret)
+            result.append(message)
 
         return result
 
-    def insert_secret(self, secret):
-        """Insert a new row"""
+    def delete_message(self, id):
         cursor = self._connection.cursor()
 
-        result = cursor.execute(
-            "INSERT INTO secret VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
-                secret.id,
-                secret.name,
-                json.dumps(
-                    {
-                        "value": secret.value,
-                        "tags": secret.tags,
-                    }
-                ),
-            )
-        )
-
-        cursor.close()
-
-        self._connection.commit()
-
-        return result.rowcount
-
-    def delete_secret(self, name):
-        """Delete a row by secret name"""
-        cursor = self._connection.cursor()
-
-        cursor.execute("DELETE FROM secret WHERE name = ?", (name,))
+        cursor.execute("DELETE FROM mailbox WHERE id = ?", (id,))
 
         cursor.close()
 

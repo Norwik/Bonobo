@@ -26,3 +26,34 @@ To use pinkman, follow the following steps:
 .. code-block::
 
     $ pip install pinkman
+
+
+3. Create the config file.
+
+.. code-block::
+
+    server:
+      hostname: localhost
+      port: 1025
+
+    cache:
+      type: sqlite
+      path: /tmp/pinkman.db
+
+    backend:
+      type: http
+      method: post
+      url: https://pinkman.free.beeceptor.com
+      apikey: 5ab99869-f403-4481-bed6-da7c8aad7521
+
+
+4. Run the pinkman server.
+
+.. code-block::
+
+    $ pinkman server run -c /etc/config.prod.yml
+
+
+5. Run the pinkman worker.
+
+    $ pinkman worker run -c /etc/config.prod.yml

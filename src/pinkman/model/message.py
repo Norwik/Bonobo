@@ -21,57 +21,87 @@
 # SOFTWARE.
 
 
-class Secret:
-    """Secret Model"""
+class Message:
+    """Message Model"""
 
     def __init__(
         self,
         id,
-        name,
-        value,
-        tags,
+        mailfrom,
+        rcpttos,
+        data,
+        mail_options,
+        rcpt_options,
+        status,
         created_at,
         updated_at,
     ):
-        """Class Constructor"""
         self._id = id
-        self._name = name
-        self._value = value
-        self._tags = tags
+        self._mailfrom = mailfrom
+        self._rcpttos = rcpttos
+        self._data = data
+        self._mail_options = mail_options
+        self._rcpt_options = rcpt_options
+        self._status = status
         self._created_at = created_at
         self._updated_at = updated_at
 
     @property
     def id(self):
-        """Secret ID"""
         return self._id
 
     @property
-    def name(self):
-        """Secret Name"""
-        return self._name
+    def status(self):
+        return self._status
 
     @property
-    def value(self):
-        """Secret Value"""
-        return self._value
+    def mailfrom(self):
+        return self._mailfrom
 
     @property
-    def tags(self):
-        """Secret Tags"""
-        return self._tags
+    def rcpttos(self):
+        return self._rcpttos
 
-    @value.setter
-    def value(self, value):
-        """Set Value"""
-        self._value = value
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def mail_options(self):
+        return self._mail_options
+
+    @property
+    def rcpt_options(self):
+        return self._rcpt_options
 
     @property
     def created_at(self):
-        """Secret Created At"""
         return self._created_at
 
     @property
     def updated_at(self):
-        """Secret Updated At"""
         return self._updated_at
+
+    @status.setter
+    def status(self, status):
+        self._status = status
+
+    @mailfrom.setter
+    def mailfrom(self, mailfrom):
+        self._mailfrom = mailfrom
+
+    @rcpttos.setter
+    def rcpttos(self, rcpttos):
+        self._rcpttos = rcpttos
+
+    @data.setter
+    def data(self, data):
+        self._data = data
+
+    @mail_options.setter
+    def mail_options(self, mail_options):
+        self._mail_options = mail_options
+
+    @rcpt_options.setter
+    def rcpt_options(self, rcpt_options):
+        self._rcpt_options = rcpt_options

@@ -20,26 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import yaml
 
 
 class Config:
     """Config Class"""
 
-    FILE = ".opswork.yml"
-
     def __init__(self):
         self.configs = {}
-        self._home = os.getenv("HOME", "")
 
-    def load(self):
-        """Load Configs"""
-        with open("{}/{}".format(self._home, Config.FILE)) as f:
+    def load(self, path):
+        self._path = path
+
+        with open(self._path) as f:
             self.configs = yaml.load(f, Loader=yaml.FullLoader)
 
         return self.configs
 
     def get_configs(self):
-        """Get Configs"""
         return self.configs

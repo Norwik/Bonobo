@@ -20,45 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from os.path import exists as file_exists
 
-class Task:
-    """Task Model"""
 
-    def __init__(self, id, name, payload, result, created_at, updated_at):
-        """Class Constructor"""
-        self._id = id
-        self._name = name
-        self._payload = payload
-        self._result = result
-        self._created_at = created_at
-        self._updated_at = updated_at
+class File:
+    """File Class"""
 
-    @property
-    def id(self):
-        """Task ID"""
-        return self._id
-
-    @property
-    def name(self):
-        """Task Name"""
-        return self._name
-
-    @property
-    def payload(self):
-        """Task Payload"""
-        return self._payload
-
-    @property
-    def result(self):
-        """Task Result"""
-        return self._result
-
-    @property
-    def created_at(self):
-        """Task Created At"""
-        return self._created_at
-
-    @property
-    def updated_at(self):
-        """Task Updated At"""
-        return self._updated_at
+    def exists(self, path):
+        return file_exists(path)
