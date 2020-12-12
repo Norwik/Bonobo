@@ -56,4 +56,6 @@ To use pinkman, follow the following steps:
 
 5. Run the pinkman worker.
 
+.. code-block::
+
     $ pinkman worker run -c /etc/config.prod.yml
