@@ -51,14 +51,14 @@ To use pinkman, follow the following steps:
 
 .. code-block::
 
-    $ pinkman server run -c /etc/config.prod.yml
+    $ pinkman server run -c /etc/config.pinkman.prod.yml
 
 
 5. Run the pinkman worker.
 
 .. code-block::
 
-    $ pinkman worker run -c /etc/config.prod.yml
+    $ pinkman worker run -c /etc/config.pinkman.prod.yml
 
 
 6. Forward packets from port 1025 to port 25.
