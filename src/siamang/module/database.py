@@ -23,7 +23,7 @@
 import json
 import sqlite3
 
-from pavio.model.environment import Environment
+from pinkman.model.message import Message
 
 
 class Database:
@@ -41,7 +41,7 @@ class Database:
         cursor = self._connection.cursor()
 
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS environment (id TEXT, name TEXT, config TEXT, createdAt TEXT, updatedAt TEXT)"
+            "CREATE TABLE IF NOT EXISTS message (id TEXT, name TEXT, config TEXT, createdAt TEXT, updatedAt TEXT)"
         )
 
         cursor.close()
@@ -49,11 +49,11 @@ class Database:
         self._connection.commit()
 
     def get_message(self, name):
-        """Get a row by environment name"""
+        """Get a row by message name"""
         cursor = self._connection.cursor()
 
         rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM environment WHERE name = '{}'".format(
+            "SELECT id, name, config, createdAt, updatedAt FROM message WHERE name = '{}'".format(
                 name
             )
         ).fetchall()
@@ -64,7 +64,7 @@ class Database:
             for row in rows:
                 data = json.loads(row[2])
 
-                environment = Environment(
+                message = Message(
                     row[0],
                     row[1],
                     data["path"],
@@ -73,22 +73,22 @@ class Database:
                     row[4],
                 )
 
-                return environment
+                return message
         else:
             return None
 
-    def insert_message(self, environment):
+    def insert_message(self, message):
         """Insert a new row"""
         cursor = self._connection.cursor()
 
         result = cursor.execute(
-            "INSERT INTO environment VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
-                environment.id,
-                environment.name,
+            "INSERT INTO message VALUES ('{}', '{}', '{}', datetime('now'), datetime('now'))".format(
+                message.id,
+                message.name,
                 json.dumps(
                     {
-                        "path": environment.path,
-                        "tags": environment.tags,
+                        "path": message.path,
+                        "tags": message.tags,
                     }
                 ),
             )
@@ -107,7 +107,7 @@ class Database:
         cursor = self._connection.cursor()
 
         rows = cursor.execute(
-            "SELECT id, name, config, createdAt, updatedAt FROM environment"
+            "SELECT id, name, config, createdAt, updatedAt FROM message"
         ).fetchall()
 
         cursor.close()
@@ -115,7 +115,7 @@ class Database:
         for row in rows:
             data = json.loads(row[2])
 
-            environment = Environment(
+            message = Message(
                 row[0],
                 row[1],
                 data["path"],
@@ -124,7 +124,7 @@ class Database:
                 row[4],
             )
 
-            result.append(environment)
+            result.append(message)
 
         return result
 

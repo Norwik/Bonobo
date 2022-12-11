@@ -24,10 +24,10 @@ import uuid
 import click
 import logging, json, sys
 
-from siamang import __version__
-from siamang.command.configs import Configs
-from siamang.model.environment import Environment
-from siamang.command.environments import Environments
+from pinkman import __version__
+from pinkman.command.configs import Configs
+from pinkman.model.environment import Environment
+from pinkman.command.environments import Environments
 
 
 @click.group(help="🐺 An SMTP Server to forward Messages into Orangutan")

@@ -23,7 +23,7 @@
 import logging
 import pytest
 
-from siamang.module.logger import Logger
+from pinkman.module.logger import Logger
 
 
 def test_logger():

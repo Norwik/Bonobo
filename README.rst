@@ -1,19 +1,19 @@
-.. image:: https://img.shields.io/pypi/v/siamang.svg
+.. image:: https://img.shields.io/pypi/v/pinkman.svg
     :alt: PyPI-Server
-    :target: https://pypi.org/project/siamang/
-.. image:: https://github.com/norwik/siamang/actions/workflows/ci.yml/badge.svg
+    :target: https://pypi.org/project/pinkman/
+.. image:: https://github.com/norwik/pinkman/actions/workflows/ci.yml/badge.svg
     :alt: Build Status
-    :target: https://github.com/norwik/siamang/actions/workflows/ci.yml
+    :target: https://github.com/norwik/pinkman/actions/workflows/ci.yml
 
 |
 
 =======
-Siamang
+Pinkman
 =======
 
 An SMTP Server to forward Messages into Orangutan.
 
-To use siamang, follow the following steps:
+To use pinkman, follow the following steps:
 
 1. Create a python virtual environment or use system wide environment
 
@@ -23,15 +23,15 @@ To use siamang, follow the following steps:
     $ source venv/bin/activate
 
 
-2. Install siamang package with pip.
+2. Install pinkman package with pip.
 
 .. code-block::
 
-    $ pip install siamang
+    $ pip install pinkman
 
 
-3. Get siamang command line help
+3. Get pinkman command line help
 
 .. code-block::
 
-    $ siamang --help
+    $ pinkman --help

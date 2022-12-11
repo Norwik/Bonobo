@@ -24,10 +24,10 @@ import os
 import yaml
 import click
 
-from pavio.module.logger import Logger
-from pavio.module.output import Output
-from pavio.module.database import Database
-from pavio.module.file_system import FileSystem
+from pinkman.module.logger import Logger
+from pinkman.module.output import Output
+from pinkman.module.database import Database
+from pinkman.module.file_system import FileSystem
 
 
 class Server:
