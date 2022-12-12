@@ -48,7 +48,7 @@ class Database:
 
         self._connection.commit()
 
-    def get_environment(self, name):
+    def get_message(self, name):
         """Get a row by environment name"""
         cursor = self._connection.cursor()
 
@@ -77,7 +77,7 @@ class Database:
         else:
             return None
 
-    def insert_environment(self, environment):
+    def insert_message(self, environment):
         """Insert a new row"""
         cursor = self._connection.cursor()
 
@@ -100,7 +100,7 @@ class Database:
 
         return result.rowcount
 
-    def list_environments(self):
+    def list_messages(self):
         """List all rows"""
         result = []
 
@@ -128,12 +128,9 @@ class Database:
 
         return result
 
-    def delete_environment(self, name):
-        """Delete a row by environment name"""
+    def delete_message(self, name):
+        """Delete a row by message name"""
         cursor = self._connection.cursor()
-
-        cursor.execute("DELETE FROM environment WHERE name = ?", (name,))
-
+        cursor.execute("DELETE FROM message WHERE name = ?", (name,))
         cursor.close()
-
         self._connection.commit()

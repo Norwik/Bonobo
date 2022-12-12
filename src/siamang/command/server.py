@@ -20,34 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
+import yaml
 import click
 
 from pavio.module.logger import Logger
 from pavio.module.output import Output
-from pavio.module.config import Config
 from pavio.module.database import Database
 from pavio.module.file_system import FileSystem
 
 
-class Environments:
-    """Environments Class"""
+class Server:
+    """Server Class"""
 
-    def __init__(self):
-        self.output = Output()
+    def __init__(self, config):
         self.database = Database()
-        self.config = Config()
         self.file_system = FileSystem()
+        self.home = os.getenv("HOME", "")
         self.logger = Logger().get_logger(__name__)
 
-    def init(self):
-        """Init database and configs"""
-        self.configs = self.config.load()
-        self.database.connect(self.configs["database"]["path"])
-        self.database.migrate()
-        return self
-
-    def delete(self, name):
-        """Delete a environment"""
-        self.database.delete_environment(name)
-
-        click.echo(f"Environment with name {name} got deleted")
+    def run(self):
+        pass

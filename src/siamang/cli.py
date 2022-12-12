@@ -36,46 +36,28 @@ def main():
     pass
 
 
-# Environments command
-@click.group(help="Manage environments")
-def environment():
+# Server command
+@click.group(help="Server commands")
+def server():
     pass
 
 
-# Delete environment sub command
-@environment.command(help="Delete a environment")
-@click.argument("name")
-def delete(name):
-    return Environments().init().delete(name)
-
-
-# Manage configs command
-@click.group(help="Manage configs")
-def config():
+# Run server sub command
+@server.command(help="Run server")
+@click.option(
+    "-c",
+    "--config",
+    "config",
+    required=True,
+    type=click.File(),
+    help="Config file for the SMTP Server",
+)
+def run(config):
     pass
-
-
-# Init configs sub command
-@config.command(help="Init configurations")
-def init():
-    return Configs().init()
-
-
-# Edit configs sub command
-@config.command(help="Edit configurations")
-def edit():
-    return Configs().edit()
-
-
-# Show configs sub command
-@config.command(help="Show configurations")
-def dump():
-    return Configs().dump()
 
 
 # Register Commands
-main.add_command(environment)
-main.add_command(config)
+main.add_command(server)
 
 
 if __name__ == "__main__":

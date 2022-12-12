@@ -20,22 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import yaml
 
 
 class Config:
     """Config Class"""
 
-    FILE = ".pavio.yml"
-
     def __init__(self):
         self.configs = {}
-        self._home = os.getenv("HOME", "")
 
-    def load(self):
+    def load(self, path):
         """Load Configs"""
-        with open("{}/{}".format(self._home, Config.FILE)) as f:
+        with open(path) as f:
             self.configs = yaml.load(f, Loader=yaml.FullLoader)
 
         return self.configs
