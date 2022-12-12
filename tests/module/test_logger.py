@@ -22,7 +22,8 @@
 
 import logging
 import pytest
-from pavio.module.logger import Logger
+
+from siamang.module.logger import Logger
 
 
 def test_logger():

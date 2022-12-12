@@ -24,13 +24,13 @@ import uuid
 import click
 import logging, json, sys
 
-from pavio import __version__
-from pavio.command.configs import Configs
-from pavio.model.environment import Environment
-from pavio.command.environments import Environments
+from siamang import __version__
+from siamang.command.configs import Configs
+from siamang.model.environment import Environment
+from siamang.command.environments import Environments
 
 
-@click.group(help="🐺 A Minimalist Python Environment Manager")
+@click.group(help="🐺 An SMTP Server to forward Messages into Orangutan")
 @click.version_option(version=__version__, help="Show the current version")
 def main():
     pass

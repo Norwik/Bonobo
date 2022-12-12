@@ -1,19 +1,19 @@
-.. image:: https://img.shields.io/pypi/v/pavio.svg
+.. image:: https://img.shields.io/pypi/v/siamang.svg
     :alt: PyPI-Server
-    :target: https://pypi.org/project/pavio/
-.. image:: https://github.com/clivern/pavio/actions/workflows/ci.yml/badge.svg
+    :target: https://pypi.org/project/siamang/
+.. image:: https://github.com/norwik/siamang/actions/workflows/ci.yml/badge.svg
     :alt: Build Status
-    :target: https://github.com/clivern/pavio/actions/workflows/ci.yml
+    :target: https://github.com/norwik/siamang/actions/workflows/ci.yml
 
 |
 
 =======
-Pavio
+Siamang
 =======
 
-A Modern Command Line Tool for Apache Kafka.
+An SMTP Server to forward Messages into Orangutan.
 
-To use pavio, follow the following steps:
+To use siamang, follow the following steps:
 
 1. Create a python virtual environment or use system wide environment
 
@@ -23,15 +23,15 @@ To use pavio, follow the following steps:
     $ source venv/bin/activate
 
 
-2. Install pavio package with pip.
+2. Install siamang package with pip.
 
 .. code-block::
 
-    $ pip install pavio
+    $ pip install siamang
 
 
-3. Get pavio command line help
+3. Get siamang command line help
 
 .. code-block::
 
-    $ pavio --help
+    $ siamang --help
